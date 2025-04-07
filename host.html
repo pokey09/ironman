@@ -1,0 +1,218 @@
+<!-- host.html (Race End + Logout Functionality) -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Race Monitor</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #74ebd5, #9face6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      color: #fff;
+    }
+    .lobby-card {
+      background: #1e2a47;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+      max-width: 600px;
+      width: 90%;
+      text-align: center;
+      animation: fadeIn 0.4s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .players-list {
+      list-style: none;
+      padding: 0;
+      margin: 20px 0 30px;
+    }
+    .players-list li {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 10px 15px;
+      margin: 8px 0;
+      border-radius: 8px;
+      font-weight: 500;
+    }
+    .lobby-card button {
+      background-color: #fca311;
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      font-size: 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s ease;
+      margin-top: 10px;
+    }
+    .lobby-card button:hover { background-color: #e59400; }
+    .podium {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 30px;
+    }
+    .podium div {
+      background: #fff;
+      color: #222;
+      padding: 20px;
+      border-radius: 10px;
+      font-weight: bold;
+      min-width: 80px;
+      text-align: center;
+    }
+    .first { order: 2; height: 120px; }
+    .second { order: 1; height: 90px; }
+    .third { order: 3; height: 70px; }
+    .race-track { margin-top: 30px; }
+    .race-track-bar {
+      background: #ddd;
+      border-radius: 20px;
+      height: 25px;
+      margin: 10px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .race-runner {
+      position: absolute;
+      top: 0;
+      width: 30px;
+      height: 30px;
+      transition: left 0.3s ease;
+    }
+    .race-runner-label {
+      text-align: left;
+      margin-bottom: 5px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="lobby-card" id="lobby">
+    <h1 id="lobbyTitle">🏁 Race Lobby</h1>
+    <p><strong>Game Code:</strong> <span id="gameCode"></span></p>
+    <ul class="players-list" id="playerList"></ul>
+    <button onclick="startGame()" id="startBtn">Start Race</button>
+    <div id="raceTrack" class="race-track"></div>
+    <div id="endGameBtnContainer"></div>
+  </div>
+  <script>
+    const raceIcons = [
+      'https://img.icons8.com/color/48/000000/swimming.png',
+      'https://img.icons8.com/color/48/000000/bicycle.png',
+      'https://img.icons8.com/color/48/000000/running.png'
+    ];
+    const gameCode = generateRandomString(5).toUpperCase();
+    document.getElementById("gameCode").textContent = gameCode;
+
+    const lobby = document.getElementById("lobby");
+    const playerList = document.getElementById("playerList");
+    const startBtn = document.getElementById("startBtn");
+    const raceTrack = document.getElementById("raceTrack");
+    const endGameBtnContainer = document.getElementById("endGameBtnContainer");
+
+    let podiumShown = false;
+    const game = { code: gameCode, started: false, players: [] };
+    localStorage.setItem("ironmanGame", JSON.stringify(game));
+
+    function updateDisplay() {
+      const updatedGame = JSON.parse(localStorage.getItem("ironmanGame"));
+      if (!updatedGame) return;
+      const allFinished = updatedGame.players.length > 0 && updatedGame.players.every(p => p.time > 0);
+
+      if (allFinished && !podiumShown) {
+        showPodium(updatedGame.players);
+        podiumShown = true;
+        return;
+      }
+      if (updatedGame.started && !allFinished) {
+        showLiveRace(updatedGame.players);
+        return;
+      }
+      if (!updatedGame.started) {
+        playerList.innerHTML = "";
+        updatedGame.players.forEach(p => {
+          const li = document.createElement("li");
+          li.textContent = p.name;
+          playerList.appendChild(li);
+        });
+      }
+    }
+
+    function startGame() {
+      const g = JSON.parse(localStorage.getItem("ironmanGame"));
+      g.started = true;
+      localStorage.setItem("ironmanGame", JSON.stringify(g));
+      alert("Race Started!");
+    }
+
+    function showLiveRace(players) {
+      playerList.style.display = "none";
+      startBtn.style.display = "none";
+      raceTrack.innerHTML = "";
+      players.forEach(p => {
+        const wrapper = document.createElement("div");
+        const label = document.createElement("div");
+        const bar = document.createElement("div");
+        const runner = document.createElement("div");
+
+        label.textContent = p.name;
+        label.className = "race-runner-label";
+        bar.className = "race-track-bar";
+        runner.className = "race-runner";
+
+        const stageIndex = p.stage || 0;
+        runner.style.left = `${Math.min(p.progress, 100)}%`;
+        runner.style.background = `url('${raceIcons[stageIndex]}') no-repeat center center / cover`;
+
+        bar.appendChild(runner);
+        wrapper.appendChild(label);
+        wrapper.appendChild(bar);
+        raceTrack.appendChild(wrapper);
+      });
+    }
+
+    function showPodium(players) {
+      players.sort((a, b) => a.time - b.time);
+      const podiumHTML = `
+        <h1>🎉 Race Results</h1>
+        <div class="podium">
+          <div class="second">🥈 ${players[1]?.name || "-"}<br>${players[1]?.time || "--"}s</div>
+          <div class="first">🥇 ${players[0]?.name || "-"}<br>${players[0]?.time || "--"}s</div>
+          <div class="third">🥉 ${players[2]?.name || "-"}<br>${players[2]?.time || "--"}s</div>
+        </div>`;
+      lobby.innerHTML = podiumHTML;
+      const endButton = document.createElement("button");
+      endButton.textContent = "End Game & Logout All";
+      endButton.onclick = () => {
+        localStorage.removeItem("ironmanGame");
+        localStorage.removeItem("currentUser");
+        alert("Game ended. All players will be logged out.");
+        location.reload();
+      };
+      endGameBtnContainer.appendChild(endButton);
+    }
+
+    function generateRandomString(length) {
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      let result = '';
+      for (let i = 0; i < length; i++) {
+        result += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      return result;
+    }
+
+    setInterval(updateDisplay, 1000);
+  </script>
+</body>
+</html>
