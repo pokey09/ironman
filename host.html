@@ -147,7 +147,7 @@
       const res = await fetch(`${API_URL}/status/${gameCode}`);
       if (!res.ok) return;
       const game = await res.json();
-      const allFinished = game.players.length > 0 && game.players.every(p => p.time > 0);
+      const allFinished = game.players.length > 0 && game.players.every(p => p.progress === 100 && p.time > 0);
 
       if (allFinished && !podiumShown) {
         showPodium(game.players);
