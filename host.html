@@ -1,4 +1,4 @@
-<!-- host.html (Race End + Logout Functionality) -->
+<!-- host.html (Race Monitor with Backend API Integration) -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -104,15 +104,19 @@
     <ul class="players-list" id="playerList"></ul>
     <button onclick="startGame()" id="startBtn">Start Race</button>
     <div id="raceTrack" class="race-track"></div>
-    <div id="endGameBtnContainer"></div>
+    <div id="endGameBtnContainer">
+      <button onclick="endGame()">End Game</button>
+    </div>
   </div>
   <script>
+    const API_URL = "https://ironman-server-production.up.railway.app";
     const raceIcons = [
       'https://img.icons8.com/color/48/000000/swimming.png',
       'https://img.icons8.com/color/48/000000/bicycle.png',
       'https://img.icons8.com/color/48/000000/running.png'
     ];
-    const gameCode = generateRandomString(5).toUpperCase();
+
+    const gameCode = localStorage.getItem("gameCode") || prompt("Enter game code:").toUpperCase();
     document.getElementById("gameCode").textContent = gameCode;
 
     const lobby = document.getElementById("lobby");
@@ -122,26 +126,27 @@
     const endGameBtnContainer = document.getElementById("endGameBtnContainer");
 
     let podiumShown = false;
-    const game = { code: gameCode, started: false, players: [] };
-    localStorage.setItem("ironmanGame", JSON.stringify(game));
 
-    function updateDisplay() {
-      const updatedGame = JSON.parse(localStorage.getItem("ironmanGame"));
-      if (!updatedGame) return;
-      const allFinished = updatedGame.players.length > 0 && updatedGame.players.every(p => p.time > 0);
+    async function updateDisplay() {
+      const res = await fetch(`${API_URL}/status/${gameCode}`);
+      if (!res.ok) return;
+      const game = await res.json();
+      const allFinished = game.players.length > 0 && game.players.every(p => p.time > 0);
 
       if (allFinished && !podiumShown) {
-        showPodium(updatedGame.players);
+        showPodium(game.players);
         podiumShown = true;
         return;
       }
-      if (updatedGame.started && !allFinished) {
-        showLiveRace(updatedGame.players);
+
+      if (game.started && !allFinished) {
+        showLiveRace(game.players);
         return;
       }
-      if (!updatedGame.started) {
+
+      if (!game.started) {
         playerList.innerHTML = "";
-        updatedGame.players.forEach(p => {
+        game.players.forEach(p => {
           const li = document.createElement("li");
           li.textContent = p.name;
           playerList.appendChild(li);
@@ -149,11 +154,13 @@
       }
     }
 
-    function startGame() {
-      const g = JSON.parse(localStorage.getItem("ironmanGame"));
-      g.started = true;
-      localStorage.setItem("ironmanGame", JSON.stringify(g));
-      alert("Race Started!");
+    async function startGame() {
+      const res = await fetch(`${API_URL}/start`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: gameCode })
+      });
+      if (res.ok) alert("Race Started!");
     }
 
     function showLiveRace(players) {
@@ -192,24 +199,19 @@
           <div class="third">🥉 ${players[2]?.name || "-"}<br>${players[2]?.time || "--"}s</div>
         </div>`;
       lobby.innerHTML = podiumHTML;
+
       const endButton = document.createElement("button");
-      endButton.textContent = "End Game & Logout All";
-      endButton.onclick = () => {
-        localStorage.removeItem("ironmanGame");
-        localStorage.removeItem("currentUser");
-        alert("Game ended. All players will be logged out.");
-        location.reload();
-      };
-      endGameBtnContainer.appendChild(endButton);
+      endButton.textContent = "End Game & Return to Lobby";
+      endButton.onclick = endGame;
+      lobby.appendChild(endButton);
     }
 
-    function generateRandomString(length) {
-      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-      let result = '';
-      for (let i = 0; i < length; i++) {
-        result += chars.charAt(Math.floor(Math.random() * chars.length));
-      }
-      return result;
+    function endGame() {
+      localStorage.removeItem("ironmanGame");
+      localStorage.removeItem("currentUser");
+      localStorage.removeItem("gameCode");
+      alert("Game ended. Returning to start.");
+      window.location.href = "index.html";
     }
 
     setInterval(updateDisplay, 1000);
