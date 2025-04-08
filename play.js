@@ -30,6 +30,7 @@ const waitInterval = setInterval(async () => {
     clickBtn.disabled = false;
     clickBtn.style.display = "inline-block";
     document.getElementById("progressBar").style.display = "block";
+    document.getElementById("timer").style.display = "block";
     updateStageUI();
     clearInterval(waitInterval);
   }
