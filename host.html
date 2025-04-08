@@ -116,7 +116,23 @@
       'https://img.icons8.com/color/48/000000/running.png'
     ];
 
-    const gameCode = localStorage.getItem("gameCode") || prompt("Enter game code:").toUpperCase();
+    let gameCode = localStorage.getItem("gameCode");
+
+    if (!gameCode) {
+      fetch(`${API_URL}/create`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" }
+      })
+      .then(res => res.json())
+      .then(data => {
+        gameCode = data.code;
+        localStorage.setItem("gameCode", gameCode);
+        document.getElementById("gameCode").textContent = gameCode;
+      });
+    } else {
+      document.getElementById("gameCode").textContent = gameCode;
+    }
+
     document.getElementById("gameCode").textContent = gameCode;
 
     const lobby = document.getElementById("lobby");
