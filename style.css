@@ -40,6 +40,7 @@ button {
   border-radius: 10px;
   cursor: pointer;
   transition: 0.3s ease;
+  touch-action: manipulation;
 }
 
 button:hover {
