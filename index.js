@@ -1,3 +1,5 @@
+const API_URL = "https://ironman-server-production.up.railway.app";
+
 async function joinGame() {
   const name = document.getElementById('username').value;
   const code = document.getElementById('joinCode').value;
@@ -5,7 +7,7 @@ async function joinGame() {
   if (!name || !code) return alert('Please enter name and code.');
 
   try {
-    const response = await fetch('https://ironman-server-production.up.railway.app/join', {
+    const response = await fetch(`${API_URL}/join`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ code, name })
