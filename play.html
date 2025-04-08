@@ -1,25 +1,21 @@
-<!-- play.html (Player Game Page - External CSS & JS) -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ironman Race</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
     <h1 id="playerName">Welcome</h1>
     <div class="status-box" id="status">⏳ Waiting for the host to start the race...</div>
     <p>⏱️ Time: <span id="timer">0</span> seconds</p>
-
     <div class="progress-container">
       <div id="runner"></div>
     </div>
-
     <button id="clickBtn" onclick="clickToAdvance()" disabled>🏁 Click to Move ➡️</button>
   </div>
-
   <script src="play.js"></script>
 </body>
 </html>

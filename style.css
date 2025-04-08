@@ -1,64 +1,80 @@
 body {
-    font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(to right, #4facfe, #00f2fe);
-    margin: 0;
-    padding: 40px;
-    color: #fff;
-    text-align: center;
-  }
-  
-  .container {
-    background: #1e3c72;
-    padding: 30px;
-    border-radius: 20px;
-    max-width: 600px;
-    margin: auto;
-  }
-  
-  .status-box {
-    background: #fff;
-    color: #222;
-    padding: 15px;
-    border-radius: 12px;
-    margin: 20px auto;
-    max-width: 400px;
-    font-weight: bold;
-  }
-  
-  .progress-container {
-    background: #eee;
-    border-radius: 20px;
-    height: 30px;
-    width: 100%;
-    max-width: 400px;
-    margin: 20px auto;
-    position: relative;
-    overflow: hidden;
-  }
-  
-  #runner {
-    width: 40px;
-    height: 40px;
-    background: url('https://img.icons8.com/color/48/000000/running.png') no-repeat center center / cover;
-    position: absolute;
-    top: -5px;
-    left: 0;
-    transition: left 0.1s ease-in-out;
-  }
-  
-  button {
-    margin-top: 20px;
-    padding: 14px 30px;
-    font-size: 18px;
-    background: #fca311;
-    color: #fff;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: 0.3s ease;
-  }
-  
-  button:disabled {
-    background: #ccc;
-    cursor: not-allowed;
-  }
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to right, #74ebd5, #9face6);
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.join-card {
+  background: #1e2a47;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+  max-width: 500px;
+  width: 90%;
+  margin: 100px auto;
+  color: #fff;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.input-group input {
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: none;
+}
+
+button {
+  background-color: #fca311;
+  color: white;
+  padding: 12px 24px;
+  font-size: 18px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+button:hover {
+  background-color: #e59400;
+}
+
+.container {
+  margin-top: 50px;
+}
+
+.status-box {
+  background: #fff;
+  color: #222;
+  padding: 15px;
+  border-radius: 12px;
+  margin: 20px auto;
+  max-width: 400px;
+  font-weight: bold;
+}
+
+.progress-container {
+  background: #eee;
+  border-radius: 20px;
+  height: 30px;
+  max-width: 400px;
+  margin: 20px auto;
+  position: relative;
+  overflow: hidden;
+}
+
+#runner {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  top: -5px;
+  left: 0;
+  transition: left 0.2s ease;
+}

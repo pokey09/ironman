@@ -5,75 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Join Ironman Race</title>
   <link rel="stylesheet" href="style.css" />
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to right, #74ebd5, #9face6);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      color: #fff;
-    }
-
-    .join-card {
-      background: #1e2a47;
-      padding: 40px;
-      border-radius: 20px;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
-      max-width: 500px;
-      width: 90%;
-      text-align: center;
-      animation: slideIn 0.5s ease-out;
-    }
-
-    @keyframes slideIn {
-      from {
-        opacity: 0;
-        transform: translateY(-20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .join-card h1 {
-      font-size: 28px;
-      margin-bottom: 30px;
-    }
-
-    .input-group {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      margin-bottom: 25px;
-    }
-
-    .input-group input {
-      padding: 12px 15px;
-      border-radius: 8px;
-      border: none;
-      font-size: 16px;
-      outline: none;
-    }
-
-    .join-card button {
-      background-color: #fca311;
-      color: white;
-      border: none;
-      padding: 12px 24px;
-      font-size: 18px;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    .join-card button:hover {
-      background-color: #e59400;
-    }
-  </style>
 </head>
 <body>
   <div class="join-card">
@@ -84,7 +15,6 @@
     </div>
     <button onclick="joinGame()">Join Game</button>
   </div>
-
   <script src="index.js"></script>
 </body>
 </html>

@@ -12,7 +12,7 @@ let stage = 0;
 let time = 0;
 let timerInterval = null;
 
-const maxStageProgress = [20, 50, 30]; // Total clicks per stage
+const maxStageProgress = [20, 50, 30];
 const stages = [
   { name: "Swim 🏊", icon: "https://img.icons8.com/color/48/000000/swimming.png" },
   { name: "Bike 🚴", icon: "https://img.icons8.com/color/48/000000/bicycle.png" },
@@ -53,7 +53,6 @@ function clickToAdvance() {
   const player = game.players.find(p => p.name === username);
 
   if (player) {
-    // Total progress based on all 3 stages
     const totalStages = maxStageProgress.reduce((a, b) => a + b, 0);
     const completed = maxStageProgress.slice(0, stage).reduce((a, b) => a + b, 0);
     const totalProgress = (completed + progress) / totalStages;
@@ -78,15 +77,12 @@ function clickToAdvance() {
         player.time = time;
         player.progress = 100;
         player.stage = 3;
-
         localStorage.setItem("ironmanGame", JSON.stringify(game));
 
-        // 🥇 Show player's place
         const updatedGame = JSON.parse(localStorage.getItem("ironmanGame"));
         const ranked = [...updatedGame.players]
           .filter(p => p.time > 0)
           .sort((a, b) => a.time - b.time);
-
         const place = ranked.findIndex(p => p.name === username) + 1;
         alert(`🎉 You finished in place #${place}!`);
       }
