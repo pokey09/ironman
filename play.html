@@ -11,10 +11,10 @@
     <h1 id="playerName">Welcome</h1>
     <div class="status-box" id="status">⏳ Waiting for the host to start the race...</div>
     <p>⏱️ Time: <span id="timer">0</span> seconds</p>
-    <div class="progress-container">
+    <div class="progress-container" id="progressBar" style="display: none;">
       <div id="runner"></div>
     </div>
-    <button id="clickBtn" onclick="clickToAdvance()" disabled>🏁 Click to Move ➡️</button>
+    <button id="clickBtn" onclick="clickToAdvance()" style="display: none;" disabled>🏁 Click to Move ➡️</button>    
   </div>
   <script src="play.js"></script>
 </body>

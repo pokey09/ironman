@@ -28,10 +28,12 @@ const waitInterval = setInterval(async () => {
   if (game.started && !gameStarted) {
     gameStarted = true;
     clickBtn.disabled = false;
+    clickBtn.style.display = "inline-block";
+    document.getElementById("progressBar").style.display = "block";
     updateStageUI();
     clearInterval(waitInterval);
   }
-}, 1000);
+}, 500);
 
 function updateStageUI() {
   statusBox.textContent = `🚩 Stage: ${stages[stage].name}`;
