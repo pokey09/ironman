@@ -45,36 +45,3 @@ button {
 button:hover {
   background-color: #e59400;
 }
-
-.container {
-  margin-top: 50px;
-}
-
-.status-box {
-  background: #fff;
-  color: #222;
-  padding: 15px;
-  border-radius: 12px;
-  margin: 20px auto;
-  max-width: 400px;
-  font-weight: bold;
-}
-
-.progress-container {
-  background: #eee;
-  border-radius: 20px;
-  height: 30px;
-  max-width: 400px;
-  margin: 20px auto;
-  position: relative;
-  overflow: hidden;
-}
-
-#runner {
-  width: 40px;
-  height: 40px;
-  position: absolute;
-  top: -5px;
-  left: 0;
-  transition: left 0.2s ease;
-}

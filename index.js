@@ -1,19 +1,25 @@
-function joinGame() {
+async function joinGame() {
   const name = document.getElementById('username').value;
   const code = document.getElementById('joinCode').value;
 
   if (!name || !code) return alert('Please enter name and code.');
 
-  const game = JSON.parse(localStorage.getItem('ironmanGame'));
+  try {
+    const response = await fetch('https://ironman-api.example.com/join', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code, name })
+    });
 
-  if (!game || game.code !== code) return alert('Invalid game code.');
+    if (!response.ok) {
+      const data = await response.json();
+      throw new Error(data.error || 'Failed to join game');
+    }
 
-  if (game.players.find(p => p.name === name)) {
-    return alert('This name is already taken. Choose a different one.');
+    localStorage.setItem('currentUser', name);
+    localStorage.setItem('gameCode', code);
+    window.location.href = 'play.html';
+  } catch (err) {
+    alert(err.message);
   }
-
-  game.players.push({ name, progress: 0, time: 0, stage: 0 });
-  localStorage.setItem('ironmanGame', JSON.stringify(game));
-  localStorage.setItem('currentUser', name);
-  window.location.href = 'play.html';
 }
