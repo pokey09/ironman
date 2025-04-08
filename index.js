@@ -5,7 +5,7 @@ async function joinGame() {
   if (!name || !code) return alert('Please enter name and code.');
 
   try {
-    const response = await fetch('https://ironman-api.example.com/join', {
+    const response = await fetch('https://ironman-server-production.up.railway.app/join', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ code, name })
