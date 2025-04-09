@@ -2,7 +2,7 @@ const API_URL = "https://ironman-server-production.up.railway.app";
 
 async function joinGame() {
   const name = document.getElementById('username').value;
-  const code = document.getElementById('joinCode').value;
+  const code = document.getElementById('joinCode').value.uppercase();
 
   if (!name || !code) return alert('Please enter name and code.');
 
