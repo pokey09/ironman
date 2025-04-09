@@ -97,8 +97,6 @@ async function clickToAdvance() {
       const res = await fetch(`${API_URL}/status/${gameCode}`);
       const data = await res.json();
       const ranked = data.players.filter(p => p.time > 0).sort((a, b) => a.time - b.time);
-      const place = ranked.findIndex(p => p.name === username) + 1;
-      alert(`🎉 You finished in place #${place}!`);
       window.location.href = "index.html";
     }
   }
